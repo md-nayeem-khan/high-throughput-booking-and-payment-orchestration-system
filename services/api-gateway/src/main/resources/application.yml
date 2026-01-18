@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      routes:
+        - id: booking-service
+          uri: http://localhost:8001
+          predicates:
+            - Path=/api/v1/bookings/**
+        - id: inventory-service
+          uri: http://localhost:8002
+          predicates:
+            - Path=/api/v1/inventory/**
+        - id: payment-service
+          uri: http://localhost:8003
+          predicates:
+            - Path=/api/v1/payments/**
+        - id: orchestration-service
+          uri: http://localhost:8004
+          predicates:
+            - Path=/api/v1/orchestration/**
+
+server:
+  port: 8000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,metrics
+  metrics:
+    export:
+      prometheus:
+        enabled: true
